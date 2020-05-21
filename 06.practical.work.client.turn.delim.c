@@ -27,11 +27,11 @@ int main()
 		if(i == 0){
 			bzero(buffer, 256);
 			getchar();
-			fgets(buffer, 256,stdin);
+			fgets(buffer, 255,stdin);
 		}
 		else{
 			bzero(buffer,  256);
-			fgets(buffer, 256 ,stdin);
+			fgets(buffer, 255 ,stdin);
 		}
 		
 		if(buffer[0] == '\n'){
