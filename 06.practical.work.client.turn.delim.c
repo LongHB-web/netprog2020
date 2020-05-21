@@ -23,15 +23,15 @@ int main()
 	while(1){
 		cout << endl;
 		
-		printf("Enter a Houston neighborhood: ");
+		printf("client: ");
 		if(i == 0){
-			bzero(buffer,256);
+			bzero(buffer, 0);
 			getchar();
-			fgets(buffer,255,stdin);
+			fgets(buffer, 0,stdin);
 		}
 		else{
-			bzero(buffer,256);
-			fgets(buffer,255,stdin);
+			bzero(buffer, 0);
+			fgets(buffer, 0 ,stdin);
 		}
 		
 		if(buffer[0] == '\n'){

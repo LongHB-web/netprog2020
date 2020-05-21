@@ -55,9 +55,9 @@ int main()
 
     while(1){
 	//If connection is established then start communication
-		bzero(buffer,256);
+		bzero(buffer, 0);
 		
-		n = read(newsockfd,buffer,255);
+		n = read(newsockfd,buffer, 0);
 		
 		if(buffer[0] == '\n'){
 			exit(0);
