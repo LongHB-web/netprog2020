@@ -25,13 +25,13 @@ int main()
 		
 		printf("client: ");
 		if(i == 0){
-			bzero(buffer, 0);
+			bzero(buffer, 256);
 			getchar();
-			fgets(buffer, 0,stdin);
+			fgets(buffer, 256,stdin);
 		}
 		else{
-			bzero(buffer, 0);
-			fgets(buffer, 0 ,stdin);
+			bzero(buffer,  256);
+			fgets(buffer, 256 ,stdin);
 		}
 		
 		if(buffer[0] == '\n'){
