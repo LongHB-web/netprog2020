@@ -66,7 +66,7 @@ int main()
 		printf("client: ");
 		if(i == 0){
             
-		    sizeof(buffer, 1024);
+		  	  sizeof(buffer, 1024);
 			getchar();
 			fgets(buffer, 1024 ,stdin);
 		}
