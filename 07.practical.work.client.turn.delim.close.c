@@ -20,24 +20,7 @@ int main()
     char* hello = "Hello from server"; 
 
     int i=0;
-	while(1){
-		cout << endl;
-		
-		printf("client: ");
-		if(i == 0){
-			bzero(buffer, 256);
-			getchar();
-			fgets(buffer, 255 ,stdin);
-		}
-		else{
-			bzero(buffer, 256);
-			fgets(buffer, 255 ,stdin);
-		}
-		
-		if(buffer[0] == '\n'){
-			close(0);
-			exit(0);
-		}
+	
     // Creating socket file descriptor 
     if ((server_fd = socket(AF_INET,  
                           SOCK_STREAM, 0)) == 0) { 
@@ -76,13 +59,26 @@ int main()
     int l = strlen(str); 
   
     printf("\nString sent by client:%s\n", str); 
-  
-    // loop to reverse the string 
-    for (i = 0, j = l - 1; i < j; i++, j--) { 
-        temp = str[i]; 
-        str[i] = str[j]; 
-        str[j] = temp; 
-    } 
+
+    while(1){
+		cout << endl;
+		
+		printf("client: ");
+		if(i == 0){
+            
+		    sizeof(buffer, 1024);
+			getchar();
+			fgets(buffer, 1024 ,stdin);
+		}
+		else{
+			sizeof(buffer, 1024);
+			fgets(buffer, 1024 ,stdin);
+		}
+		
+		if(buffer[0] == '\n'){
+			close(0);
+			exit(0);
+		}
   
     // send reversed string to client 
     // by send system call 
