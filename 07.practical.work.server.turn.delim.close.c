@@ -5,7 +5,9 @@
 #include <stdlib.h> 
 #include <string.h> 
 #include <sys/socket.h> 
-#include <unistd.h> 
+#include <unistd.h>
+#include <fcntl.h> /* Added for the nonblocking socket */
+
   
 #define PORT 8090 
   
@@ -44,7 +46,7 @@ int main()
         printf("\nAddress not supported \0"); 
         return -1; 
     } 
-  
+
     // connect the socket 
     if (connect(sock, (struct sockaddr*)&serv_addr, 
                 sizeof(serv_addr)) 
@@ -52,17 +54,15 @@ int main()
         printf("\nConnection Failed \0"); 
         return -1; 
     } 
-
     while(1){
 	//If connection is established then start communication
-		bzero(buffer, 256);
+		bzero(buffer, 1024);
 		
-		n = read(newsockfd,buffer, 255);
+		int n = read(newsock,buffer, 1024);
 		
 		if(buffer[0] == '\n'){
 			exit(0);
-		}
-	
+        }
 		if(n < 0){
 			perror("ERROR reading from socket");
 			exit(1);
