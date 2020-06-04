@@ -19,11 +19,11 @@ int main()
   
     printf("\nInput the string:"); 
     scanf("%[^\n]s", str); 
-  
+
     char buffer[1024] = { 0 }; 
   
     // Creating socket file descriptor 
-    if ((sock = socket(AF_INET, 
+    if ((sockfd = socket(AF_INET, 
                        SOCK_STREAM, 0)) 
         < 0) { 
         printf("\n Socket creation error \n"); 
@@ -46,23 +46,50 @@ int main()
     } 
 
     // connect the socket 
-    if (connect(sock, (struct sockaddr*)&serv_addr, 
+    if (connect(sockfd, (struct sockaddr*)&serv_addr, 
                 sizeof(serv_addr)) 
         < 0) { 
         printf("\nConnection Failed \0"); 
         return -1; 
     } 
-    if ((new_fd = accept(sockfd, (struct sockaddr *)&their_addr, \
+     if ((new_fd = accept(sockfd, (struct sockaddr *)&their_addr, \
        			&sin_size)) == -1) {
        		perror("accept");
         			}
         fcntl(last_fd, F_SETFL, O_NONBLOCK); /* Change the socket into non-blocking state	*/
         fcntl(new_fd, F_SETFL, O_NONBLOCK); /* Change the socket into non-blocking state	*/
 
-
-
     while(1){
-	//If connection is established then start communication
+        fd_set set;
+        fd_ZEZO(&set);
+        fd_SET(sockfd, &set );
+        int maxfd = sockfd; // a required value to pass to select()
+        
+        for (int i = 0;i< 100; i++) {
+        // add connected client sockets to set
+                if (clientfds[i] > 0) FD_SET(clientfds[i], &set);
+                if (clientfds[i] > maxfd) maxfd = clientfds[i];
+        }
+            select(maxfd+1, &set, NULL, NULL, NULL);
+        
+            // a «listening» socket?
+            if (FD_ISSET(sockfd, &set)) {
+                clientfd = accept(sockfd, (struct sockaddr *) &saddr, &clen);
+
+                int fl = fcntl(sockfd, F_GETFL, 0);
+                fl |= O_NONBLOCK;
+                fcntl(clientfd, F_SETFL, fl);
+
+             // add it to the clientfds array
+                for (int i = 0; i < MAX_CLIENT; i++) {
+                if (clientfds[i] == 0) {
+                clientfds[i] = clientfd;
+                break;
+             }
+         }     
+    }
+
+	    //If connection is established then start communication
 		bzero(buffer, 1024);
 		
 		int n = read(newsock,buffer, 1024);
@@ -76,21 +103,21 @@ int main()
 			exit(1);
 		}
   
-    int l = strlen(str); 
-  
-    // send string to server side 
-    send(sock, str, sizeof(str), 0); 
-  
-    // read string sent by server 
-    valread = read(sock, str, l); 
-  
-    printf("%s\n", str); 
-
-    scanf("%s" , buf);
-    if (strcmp(buffer, "/quit")) {
-       
-        break;
-    }
+        int l = strlen(str); 
     
-    return 0; 
-} 
+        // send string to server side 
+        send(sock, str, sizeof(str), 0); 
+    
+        // read string sent by server 
+        valread = read(sock, str, l); 
+    
+        printf("%s\n", str); 
+
+        scanf("%s" , buf);
+        if (strcmp(buffer, "/quit")) {
+        
+            break;
+        }
+        
+        return 0; 
+    } 
